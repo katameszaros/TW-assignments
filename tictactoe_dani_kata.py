@@ -63,30 +63,38 @@ def print_winner(winner_player):
     print(winner_player + make_red(" won") + "!")
 
 
+def make_winner_combo_red(char,spot1,spot2,spot3):
+    #If there is a winner combo, it will make the 3 winner symbol red
+    board[spot1] = make_red(char)
+    board[spot2] = make_red(char)
+    board[spot3] = make_red(char)
+    show_game()
+
+
+def print_and_update_winner(char):
+    global player2_wins
+    if char == "X":
+        print_winner(players[0])
+        player2_wins=False
+    if char == "O":
+        print_winner(players[1])
+        player2_wins=True
+
+
+def play_again():
+    again = input("Again(y/n)? ")
+    if again == "y":
+        new_board()
+    elif again == "n":
+        print("Until the next time,bye!")
+        sys.exit()
+
+
 def win_combo(char,spot1,spot2,spot3):
     if board[spot1] == char and board[spot2] == char and board[spot3] == char:
-        board[spot1] = make_red(char)
-        board[spot2] = make_red(char)
-        board[spot3] = make_red(char)
-        show_game()
-
-        global player2_wins
-        if char == "X":
-            print_winner(players[0])
-            player2_wins=False
-        if char == "O":
-            print_winner(players[1])
-            player2_wins=True
-
-        again = input("Again(y/n) ?")
-        if again == "y":
-            new_board()
-            return player2_wins
-            one_round()
-        elif again == "n":
-            print("Until the next time,bye!")
-        sys.exit()
-     
+        make_winner_combo_red(char,spot1,spot2,spot3)
+        print_and_update_winner(char)
+        play_again()
 
 def is_there_space():
     board_state = False
@@ -104,7 +112,7 @@ def is_there_space():
 def check_winning(char):
      winning = 0
      for x in range(len(wins)):
-        win_combo(char ,wins[x][0], wins[x][1], wins[x][2]) == True
+        win_combo(char ,wins[x][0], wins[x][1], wins[x][2])
 
 
 def is_valid_move(candidate):
